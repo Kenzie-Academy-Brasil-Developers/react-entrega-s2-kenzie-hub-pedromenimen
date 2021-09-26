@@ -1,0 +1,22 @@
+.homeContainer {
+    transform: translate(-50%, 140%);
+    position: absolute;
+    left: 50%;
+    width: 300px;
+}
+
+.homeTitle {
+    font-family: monospace;
+    text-align: center;
+}
+
+.homeButtonList {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 100px;
+    transform: translate(-50%, 40%);
+    left: 50%;
+    justify-content: space-around;
+}
