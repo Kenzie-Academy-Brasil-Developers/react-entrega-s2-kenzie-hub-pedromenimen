@@ -1,4 +1,6 @@
+import { Button } from "@material-ui/core";
 import api from "../../services/api";
+import BasicPopover from "../popover";
 import "./style.css";
 
 const TechList = ({ techList }) => {
@@ -6,9 +8,9 @@ const TechList = ({ techList }) => {
   const handleButton = (tech) => {
     api
       .delete(`/users/techs/${tech.id}`, 
-        {tech: { Authentication: `Bearer: ${token}` }},
+        {headers: { Authorization: `Bearer: ${token}` }},
       )
-      .then((res) => console.log(res))
+      .then()
       .catch((err) => console.log(err));
   };
   if (techList.length === 0) {
@@ -20,11 +22,15 @@ const TechList = ({ techList }) => {
   } else {
     return techList.map((item, index) => (
       <div className="techList" key={index}>
-        <h1>{item.title}</h1>
-        <p>{item.status}</p>
-        <button type="button" onClick={() => handleButton(item)}>
+        <h1>Tecnologia: {item.title}</h1>
+        <p>Status: {item.status}</p>
+        <BasicPopover tech={item}/>
+        <Button
+        variant="contained"
+        color="secondary"
+        type="button" onClick={() => handleButton(item)}>
           Deletar
-        </button>
+        </Button>
       </div>
     ));
   }

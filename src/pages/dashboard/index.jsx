@@ -6,13 +6,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import TechList from "../../components/techList";
 import { useState } from "react";
 import api from "../../services/api";
-import "./style.css"
+import "./style.css";
 
 const Dashboard = ({ authenticated }) => {
-  const history = useHistory()
-  const [techList, setTechList] = useState([]);
+  const history = useHistory();
+  const [techList, setTechList] = useState("");
   const token = JSON.parse(localStorage.getItem("@Kenziehub:token"));
-  const id = JSON.parse(localStorage.getItem("@Kenziehub:id"));
+  const id = JSON.parse(localStorage.getItem("@Kenziehub:id")) || "";
   const dashboardSchema = yup.object().shape({
     title: yup.string().required(),
     status: yup.string().required(),
@@ -21,22 +21,20 @@ const Dashboard = ({ authenticated }) => {
   api
     .get(`/users/${id}`)
     .then((res) => setTechList(res.data.techs))
-    .catch((err) => console.log(`erro ${err}`));
+    .catch((err) => console.log(`Erro: ${err}`));
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(dashboardSchema) });
+
   const handleButton = (data) => {
-    console.log(data);
     api
-      .post(
-        "users/techs",
-         data ,
-        { headers: { Authorization: `Bearer: ${token}` } }
-      )
-      .then((res) => console.log(res))
+      .post("users/techs", data, {
+        headers: { Authorization: `Bearer: ${token}` },
+      })
+      .then()
       .catch((err) => console.log(err));
   };
   if (!authenticated) {
@@ -45,20 +43,26 @@ const Dashboard = ({ authenticated }) => {
   return (
     <div className="dashboardContainer">
       <i onClick={() => history.push("/")} className="fas fa-home"></i>
-      <form onSubmit={handleSubmit(handleButton)}>
+      <form
+      className="formContainer"
+      onSubmit={handleSubmit(handleButton)}>
         <input
           {...register("title")}
           type="text"
           placeholder="Adicionar nova tecnologia"
         />
+        <span>{errors.title?.message}</span>
         <input
           {...register("status")}
           type="text"
           placeholder="Adicionar descrição"
         />
-        <Button type="submit">Adcionar</Button>
-        <TechList techList={techList}></TechList>
+        <span>{errors.status?.message}</span>
+        <Button color="secondary" variant="contained" type="submit">
+          Adcionar
+        </Button>
       </form>
+      <TechList techList={techList}></TechList>
     </div>
   );
 };

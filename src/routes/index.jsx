@@ -2,7 +2,6 @@ import { Route, Switch } from "react-router";
 import Home from "../pages/home";
 import Login from "../pages/login";
 import Register from "../pages/register";
-import StudentsList from "../pages/teste";
 import Dashboard from "../pages/dashboard";
 import { useEffect, useState } from "react";
 
@@ -12,7 +11,7 @@ const Routes = () => {
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("@Kenziehub:token"));
     if (token) {
-      setAuthenticated(true)
+      setAuthenticated(true);
     }
   }, [authenticated]);
   return (
@@ -28,9 +27,6 @@ const Routes = () => {
       </Route>
       <Route exact path="/users">
         <Register authenticated={authenticated} />
-      </Route>
-      <Route exact path="/teste">
-        <StudentsList authenticated={authenticated} />
       </Route>
       <Route exact path="/dashboard">
         <Dashboard authenticated={authenticated} />

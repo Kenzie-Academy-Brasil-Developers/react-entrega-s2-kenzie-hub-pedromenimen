@@ -5,14 +5,18 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import api from "../../services/api";
+import { toast } from "react-toastify";
 
 const Login = ({ setAuthenticated, authenticated }) => {
   const history = useHistory();
   const loginSchema = yup.object().shape({
-    email: yup.string().matches(
-      "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-      "Campo inválido"
-    ).required("Campo requerido"),
+    email: yup
+      .string()
+      .matches(
+        "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+        "E-mail inválido"
+      )
+      .required("Campo requerido"),
     password: yup.string().required("Campo requerido"),
   });
   const {
@@ -24,13 +28,14 @@ const Login = ({ setAuthenticated, authenticated }) => {
     api
       .post("/sessions", data)
       .then((res) => {
+        toast.success(`Bem vindo, ${res.data.user.name}`)
         const { token } = res.data;
-        localStorage.setItem("@Kenziehub:id", JSON.stringify(res.data.user.id))
+        localStorage.setItem("@Kenziehub:id", JSON.stringify(res.data.user.id));
         localStorage.setItem("@Kenziehub:token", JSON.stringify(token));
         setAuthenticated(true);
         return history.push("/");
       })
-      .catch((err) => console.log(err));
+      .catch(() => toast.error("E-mail ou senha incorretos"));
   };
 
   if (authenticated) {

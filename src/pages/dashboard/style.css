@@ -14,3 +14,19 @@
 .dashboardContainer i:hover {
     cursor: pointer;
 }
+
+.formContainer input {
+    margin:0;
+    border-radius: 0;
+    border: solid black 2px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+.formContainer Button {
+    bottom: 1px;
+    margin: 0;
+    box-sizing: border-box;
+    height: 30px;
+    border-radius: 0 10px 10px 0;
+}
