@@ -19,16 +19,14 @@ const Login = ({ setAuthenticated, authenticated }) => {
       .required("Campo requerido"),
     password: yup.string().required("Campo requerido"),
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(loginSchema) });
+  const { register, handleSubmit } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
   const handleButton = (data) => {
     api
       .post("/sessions", data)
       .then((res) => {
-        toast.success(`Bem vindo, ${res.data.user.name}`)
+        toast.success(`Bem vindo, ${res.data.user.name}`);
         const { token } = res.data;
         localStorage.setItem("@Kenziehub:id", JSON.stringify(res.data.user.id));
         localStorage.setItem("@Kenziehub:token", JSON.stringify(token));

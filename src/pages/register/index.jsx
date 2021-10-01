@@ -65,7 +65,7 @@ const Register = ({ authenticated }) => {
       .post("/users", user)
       .then(() => {
         toast.success("Sucesso ao criar conta");
-        history.push("/sessions")
+        history.push("/sessions");
       })
       .catch(toast.error("Este email já está sendo utilizado"));
     <Redirect to="/" />;
@@ -82,9 +82,10 @@ const Register = ({ authenticated }) => {
       <form onSubmit={handleSubmit(handleButton)} className="inputListRegister">
         <input placeholder="E-mail" {...register("email")} />
         <p>{errors.email?.message}</p>
-        <input placeholder="Senha" {...register("password")} />
+        <input type="password" placeholder="Senha" {...register("password")} />
         <p>{errors.password?.message}</p>
         <input
+          type="password"
           placeholder="Confirmação de senha"
           {...register("passwordConfirmation")}
         />
